@@ -22,26 +22,8 @@ client.on('messageCreate', async (message) => {
 
   const args = message.content.split(/ +/);
   const command = args.shift();
-  if (command === '$status') {
-    const activities = args.shift();
-    const newName = args.join(' ');
-
-    try {
-      const tipo = await isValidActivityType(activities);
-
-      const newPresence = {
-        activities: [{ name: newName, type: tipo }],
-        status: 'online'
-      };
-
-      await client.user.setPresence(newPresence);
-      message.channel.send(`Presencia actualizada para: ${newName}`);
-    } catch (err) {
-      console.error('Error al actualizar la presencia', err);
-      message.channel.send('Tipo de actividad inválido. Usa un número entre 0 y 5.');
-    }
-  }
-  else if (command === '$join') {
+  
+  if (command === '$join') {
     const channel = message.member.voice.channel;
 
     if (!channel) {
@@ -77,15 +59,5 @@ client.on('messageCreate', async (message) => {
     }
 }
 });
-
-function isValidActivityType(type) {
-  return new Promise((resolve, reject) => {
-    if (type.match(/^[0-5]$/)) {
-      resolve(parseInt(type, 10));
-    } else {
-      reject(new Error('Tipo de actividad inválido. Usa un número entre 0 y 5.'));
-    }
-  });
-}
 
 client.login(process.env.TOKEN);
