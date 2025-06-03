@@ -1,7 +1,7 @@
 module.exports = {
     name: "leave",
     description: "Abandona el canal de voz",
-    execute: async () => {
+    execute: (message) => {
         const connection = getVoiceConnection(message.guild.id);
 
         if (!connection) {

@@ -1,7 +1,7 @@
 module.exports = {
     name: "join",
     description: "Únete a un canal de voz",
-    execute: async () => {
+    execute: (message) => {
         const channel = message.member.voice.channel;
 
         if (!channel) {

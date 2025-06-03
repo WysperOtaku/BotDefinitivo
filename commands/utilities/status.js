@@ -9,6 +9,7 @@ module.exports = {
 
         try {
             const tipo = await isValidActivityType(activities);
+            console.log(`El tipo: ${tipo}`);
 
             const newPresence = {
                 activities: [{ name: newName, type: tipo }],
@@ -24,13 +25,12 @@ module.exports = {
     }
 };
 
-async function isValidActivityType (type) {
-    const validTypes = ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING', 'COMPETING'];
-    const typeIndex = parseInt(type, 10);
-
-    if (isNaN(typeIndex) || typeIndex < 0 || typeIndex >= validTypes.length) {
-        throw new Error('Tipo de actividad inválido');
+function isValidActivityType (type) {
+    return new Promise((resolve, reject) => {
+    if (type.match(/^[0-5]$/)) {
+      resolve(parseInt(type, 10));
+    } else {
+      reject(new Error('Tipo de actividad inválido. Usa un número entre 0 y 5.'));
     }
-
-    return validTypes[typeIndex];
+  });
 }
