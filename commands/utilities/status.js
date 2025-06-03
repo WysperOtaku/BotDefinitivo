@@ -9,7 +9,6 @@ module.exports = {
 
         try {
             const tipo = await isValidActivityType(activities);
-            console.log(`El tipo: ${tipo}`);
 
             const newPresence = {
                 activities: [{ name: newName, type: tipo }],
