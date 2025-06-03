@@ -24,7 +24,7 @@ module.exports = {
     }
 };
 
-isValidActivityType async (type) => {
+async function isValidActivityType (type) {
     const validTypes = ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING', 'COMPETING'];
     const typeIndex = parseInt(type, 10);
 
