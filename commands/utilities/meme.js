@@ -1,19 +1,56 @@
-const { execute } = require("./chists");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 module.exports = {
     name: "meme",
     execute: async (msg) => {
-        try {
-        const response = await fetch("https://meme-api.com/gimme/memesESP");
-        const data = await response.json();
 
-        if (!data || !data.url) {
-            return msg.channel.send("No tengo memes para ti 😢.");
+        const args = msg.content.trim().split(/\s+/)
+            
+        let reddit = args[1]
+
+        if(reddit == null) {
+            reddit = "shitposting";
+            msg.channel.send(`Como no me has dicho reddit ire a buscar el meme a ${reddit}.`);
         }
 
-        msg.channel.send({
-            files: [data.url]
-        });
+        try {
+            const response = await fetch(`https://www.reddit.com/r/${reddit}/new.json?limit=100`);
+            const data = await response.json();
+
+            const posts = data.data.children;
+
+            const validPosts = posts.filter(p => {
+                const url = p.data.url;
+                const hint = p.data.post_hint;
+                return (
+                    url.endsWith(".jpg") ||
+                    url.endsWith(".jpeg") ||
+                    url.endsWith(".png") ||
+                    url.endsWith(".gif") ||
+                    url.endsWith(".mp4") ||
+                    hint === "image" ||
+                    hint === "hosted:video"
+                );
+            });
+
+            if (!validPosts.length) {
+                return msg.channel.send("No tengo memes para ti 😢.");
+            }
+
+            const post = validPosts[Math.floor(Math.random() * validPosts.length)];
+            const postData = post.data;
+            const postLink = `https://reddit.com${post.data.permalink}`;
+
+            let url = postData.url;
+
+            if (postData.secure_media && postData.secure_media.reddit_video) {
+                url = postData.secure_media.reddit_video.fallback_url;
+            }
+
+            await msg.channel.send({
+                content: `[Ver post en Reddit](${postLink})\n${post.data.title}`,
+                files: [url]
+            });
 
         } catch (error) {
             console.error("Error al obtener el meme:", error);
