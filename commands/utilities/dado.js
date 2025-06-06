@@ -1,5 +1,3 @@
-const { execute } = require("./chists");
-
 module.exports = {
     name: "dado",
     execute: async(msg) => {
