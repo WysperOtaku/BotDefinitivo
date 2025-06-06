@@ -2,11 +2,10 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 
 module.exports = {
     name: "meme",
-    execute: async (msg) => {
-
-        const args = msg.content.trim().split(/\s+/)
-            
-        let reddit = args[1]
+    async execute(msg, args) {
+        
+        args.slice(1);
+        let reddit = args[0];
 
         if(reddit == null) {
             reddit = "shitposting";
