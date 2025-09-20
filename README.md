@@ -1,4 +1,4 @@
-# BotDefinitivo
+# BotDefinitivo (Lo tengo abandonado al pobre)
 
 BotDefinitivo es un bot para Discord desarrollado en Node.js usando [discord.js](https://discord.js.org/) y [@discordjs/voice](https://discordjs.guide/voice/).
 
